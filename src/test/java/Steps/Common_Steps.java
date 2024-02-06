@@ -17,11 +17,11 @@ public class Common_Steps {
 
 	}
 	
-//	@After
-//	public void tearDown() throws Exception {
-//		driver.quit();
-//		Thread.sleep(1000);
-//	}
+	@After
+	public void tearDown() throws Exception {
+		driver.quit();
+		Thread.sleep(1000);
+	}
 	
 	public WebDriver getDriver() {
 		return driver;

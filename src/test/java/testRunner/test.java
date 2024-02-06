@@ -9,7 +9,7 @@ import io.cucumber.testng.CucumberOptions;
 		plugin = {"pretty"},
 		//dryRun = false,
 		monochrome = false,
-		tags = "@tag2.1"
+		tags = "@tag"
 		)
 
 
