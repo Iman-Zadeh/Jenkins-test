@@ -4,6 +4,8 @@ import static org.testng.Assert.fail;
 
 import java.time.Duration;
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -80,9 +82,9 @@ public class OrderProducts_Steps {
 		driver.findElement(By.xpath("//span[normalize-space()='Shopping cart']")).click();
 		
 		// Select country from the drop down list
-		WebElement dropdown = driver.findElement(By.xpath("//select[@id='CountryId']"));
-		Select select = new Select(dropdown);
-		select.selectByVisibleText("United Kingdom");
+		WebElement countryDropdown = driver.findElement(By.xpath("//select[@id='CountryId']"));
+		Select selectCountry = new Select(countryDropdown);
+		selectCountry.selectByVisibleText("United Kingdom");
 		
 		// Check the check box if unchecked and continue
 		WebElement termsCheckbox = driver.findElement(By.id("termsofservice"));
@@ -94,25 +96,35 @@ public class OrderProducts_Steps {
 		//Continue Billing address
 		WebDriverWait wait= new WebDriverWait(driver, Duration.ofSeconds(100));
 		wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(By.xpath("//input[@onclick='Billing.save()']")));
+		WebElement addressDropdown = driver.findElement(By.id("billing-address-select"));
+		Select selectAddress = new Select(addressDropdown);
+		selectAddress.selectByVisibleText("Iman Tester1, Vienna street, Vienna 1234, Austria");		
+		wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(By.xpath("//input[@onclick='Billing.save()']")));
 		driver.findElement(By.xpath("//input[@onclick='Billing.save()']")).click();
 		
 		// Select in store check box and continue 
-//		WebElement pickupCheckbox = driver.findElement(By.id("PickUpInStore"));
-//		if(!pickupCheckbox.isSelected()) {
-//			pickupCheckbox.click();
-//		}
-		wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(By.xpath("//input[@onclick='Billing.save()']")));
+		wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(By.id("PickUpInStore")));
+		WebElement pickupCheckbox = driver.findElement(By.id("PickUpInStore"));
+		if(!pickupCheckbox.isSelected()) {
+			pickupCheckbox.click();
+		}
+		wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(By.xpath("//input[@onclick='Shipping.save()']")));
 		driver.findElement(By.xpath("//input[@onclick='Shipping.save()']")).click();
+		
+		//Click on cash method
+		wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(By.xpath("//input[@id='paymentmethod_0']")));
+		driver.findElement(By.xpath("//input[@id='paymentmethod_0']")).click();
 		
 		//Continue "Cash On Delivery" payment method
 		wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(By.xpath("//input[@class='button-1 payment-method-next-step-button']")));
 		driver.findElement(By.xpath("//input[@class='button-1 payment-method-next-step-button']")).click();
 		
 		//Continue payment information
-		wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(By.xpath("//input[@class='button-1 payment-info-next-step-button']")));
+		wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(By.xpath("(//p[normalize-space()='You will pay by COD'])[1]")));
 		driver.findElement(By.xpath("//input[@class='button-1 payment-info-next-step-button']")).click();
 		
 		//Confirm Order
+		wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(By.xpath("//div[@class='cart-footer']")));
 		wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(By.xpath("//input[@value='Confirm']")));
 		driver.findElement(By.xpath("//input[@value='Confirm']")).click();
 
@@ -122,7 +134,10 @@ public class OrderProducts_Steps {
 	@Then("I verify the success message")
 	public void i_verify_the_success_message() {
 		//Confirming the success message and continue
-		String orderMessage = driver.findElement(By.xpath("//strong[normalize-space()='Your order has been successfully processed!']")).getText();
+		WebDriverWait wait= new WebDriverWait(driver, Duration.ofSeconds(100));
+		wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(By.xpath("//div[@class='section order-completed']")));
+		String orderMessage = driver.findElement(By.xpath("//div[@class='title']")).getText();
+		System.out.println(orderMessage);
 		if(!orderMessage.equals("Your order has been successfully processed!")) {
 			fail("Your order has NOT been successfully processed!");
 		}
