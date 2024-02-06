@@ -65,7 +65,7 @@ public class HomePage_Steps {
 	}
 	@Then("I navigate to the Books page")
 	public void i_navigate_to_the_books_page() {
-	    String expUrl = "https://demowebshop.tricentis.com/booksss";
+	    String expUrl = "https://demowebshop.tricentis.com/books";
 	    String actUrl = driver.getCurrentUrl();
 	    if (!expUrl.equals(actUrl)) {
 	    	fail("Page doen't navigate to the expected page"); 
