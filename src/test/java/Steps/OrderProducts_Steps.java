@@ -19,7 +19,6 @@ import io.cucumber.java.en.When;
 public class OrderProducts_Steps {
 	
 	WebDriver driver;
-	//WebDriverWait wait= new WebDriverWait(driver, Duration.ofSeconds(100));
 	
 	public OrderProducts_Steps(Common_Steps common_steps) {
 		this.driver = common_steps.getDriver();
